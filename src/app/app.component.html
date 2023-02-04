@@ -1,0 +1,20 @@
+<h1>L3 Miage : CL&IHML TP3, la TodoList</h1>
+
+<form (submit)="tdls.create(nextTodo); nextTodo = '' ">
+    <input [(ngModel)]="nextTodo" name="nextTodo"/>
+</form>
+
+<ul>
+    <li *ngFor="let item of (tdls.observable | async)?.items; trackBy: trackById">
+        <input  type="checkbox" 
+                [ngModel]="item.isDone"
+                (ngModelChange)="tdls.update({isDone: $event}, item)"
+                />
+        <input  [ngModel]="item.label"
+                (ngModelChange)="tdls.update({label: $event}, item)"
+                />
+        <button (click)="tdls.delete(item)">X</button>
+    </li>
+</ul>
+
+<pre>{{tdls.observable | async | json}}</pre>
