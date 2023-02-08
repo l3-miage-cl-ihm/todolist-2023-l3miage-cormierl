@@ -15,11 +15,25 @@ export interface TodoList {
 
 let idItem = 0;
 
+function extractTDLfromLocal(): TodoList {
+  const str = localStorage.getItem('toDoList')
+  if (!str) {
+    return {label: 'L3 MIAGE', items: [] };
+  } else {
+    const L: TodoList = JSON.parse(str);
+    idItem = 1 + L.items.length;
+    console.log("Nombre d'item = " + idItem);
+    return L;
+  }
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class TodolistService {
-  private subj = new BehaviorSubject<TodoList>({label: 'L3 MIAGE', items: [] });
+  private subj = new BehaviorSubject<TodoList>(extractTDLfromLocal());
   readonly observable: Observable<TodoList>;
 
   constructor(ngz: NgZone) {
@@ -27,6 +41,13 @@ export class TodolistService {
       runInZone(ngz),
       shareReplay(1)
     );
+    /*
+    On subscribe l'observable au service de local storage de tel sorte que toutes les modifications/ajouts soient répercutés
+    dans le storage
+    */
+    this.observable.subscribe(
+      TDL => localStorage.setItem('toDoList', JSON.stringify(TDL))
+    )
   }
 
   create(...labels: readonly string[]): this {
