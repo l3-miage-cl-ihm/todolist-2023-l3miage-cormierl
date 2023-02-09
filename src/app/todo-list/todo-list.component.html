@@ -1,37 +1,37 @@
-
-<section class="todoapp">
-    <header class="header">
-      <h1></h1>
-      <form>
-        <input  name        = "newTodoInput"
-                class       = "new-todo"
-                placeholder = "Que faire?"
-                autofocus #lab/>
-      </form>
-    </header>
-    <section class="main">
-      <input  class="toggle-all"
-              type="checkbox"
-              name="toggleAll"
-      />
-      <label for="toggleAll">Mark all as complete</label>
-      <ul class="todo-list">
-      </ul>
-    </section>
-    <footer class="footer">
-      <span class="todo-count"><strong></strong> restantes</span>
-      <ul class="filters">
-        <li>
-          <a class="filterAll">Tous</a>
-        </li>
-        <li>
-          <a class="filterActives">Actifs</a>
-        </li>
-        <li>
-          <a class="filterCompleted">Complétés</a>
-        </li>
-      </ul>
-      <button class="clear-completed">Supprimer cochées</button>
-    </footer>
-  </section>
+<section class="todoapp" *ngIf="todoListObs | async as tdl"> <!-- nécessaire pour obtenir le label : abonnement à l'observable -->
   
+  <header class="header">
+    <h1>{{tdl.label}}</h1>
+    <form (submit)="create(lab.value); lab.value= ''">
+      <input name="newTodoInput" class="new-todo" placeholder="Que faire?" autofocus #lab />
+    </form>
+  </header>
+
+  <section class="main" *ngIf="tdl.items.length > 0"> <!-- pour les cocher tous il en faut au moins 1-->
+    <input class="toggle-all" type="checkbox" name="toggleAll"/>
+    <label for="toggleAll">Mark all as complete</label>
+    <ul class="todo-list">
+      <li *ngFor="let task of tdl.items; index as i; trackBy: trackById" [class.completed]="task.isDone" [class.editing]="todo.editing" >
+        <!-- envoyer les infos nécessaires a todo-item -->
+        <app-todo-item #todo [todoItem]="task" (updateEvt)="update($event, task)" (removeEvt)="delete($event)"></app-todo-item>
+      </li>
+    </ul>
+  </section>
+
+  <footer class="footer" *ngIf="tdl.items.length > 0">
+    <span class="todo-count"><strong></strong>{{remaining}} restantes</span>
+    <ul class="filters">
+      <li>
+        <a class="filterAll">Tous</a>
+      </li>
+      <li>
+        <a class="filterActives">Actifs</a>
+      </li>
+      <li>
+        <a class="filterCompleted">Complétés</a>
+      </li>
+    </ul>
+    <button class="clear-completed">Supprimer cochées</button>
+  </footer>
+
+</section>

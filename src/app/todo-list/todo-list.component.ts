@@ -11,9 +11,15 @@ import { TodolistService, TodoList, TodoItem } from '../todolist.service';
 export class TodoListComponent {
 
   readonly todoListObs: Observable<TodoList>;
+  public remaining: number = 0
 
   constructor(private tds: TodolistService) {
     this.todoListObs = tds.observable;
+    this.todoListObs.subscribe( obs => {
+      this.remaining = 0;
+      obs.items.forEach(item => !item.isDone ? this.remaining++ : !item.isDone)
+    }
+    )
   }
 
   create(...labels: readonly string[]): void {
@@ -28,4 +34,7 @@ export class TodoListComponent {
     this.tds.update(data, ...items);
   }
 
+  trackById(i : number){
+    return i;
+  }
 }

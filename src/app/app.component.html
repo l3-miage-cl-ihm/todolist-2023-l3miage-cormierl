@@ -1,12 +1,18 @@
 <h1>L3 Miage : CL&IHM TP3, la TodoList</h1>
 <hr>
+<h2>VERSION 2</h2>
+
+<app-todo-list></app-todo-list>
+
+<hr>
 <h2>VERSION 1</h2>
+
 <!--
     #taskLabel permet de donner un nom à la balise input pour pouvoir la manipuler unitairement
     Ici on s'abonne à l'évènement submit pour pouvoir ajouter le contenu de ce que l'on tape dans la balise input
     taskLabel = '' permet de supprimer ce qui a été entrée dans la balise input pour le prochain mot
  -->
-<form (submit)="create( taskLabel.value ); taskLabel.value = '' ">
+ <form (submit)="create( taskLabel.value ); taskLabel.value = '' ">
     <input placeholder="Entrer une tâche" #taskLabel />
 </form>
 
@@ -29,8 +35,3 @@
 
 
 <pre>{{todoListObs|async|json}}</pre>
-
-<hr>
-<h2>VERSION 2</h2>
-
-<app-todo-list></app-todo-list>
