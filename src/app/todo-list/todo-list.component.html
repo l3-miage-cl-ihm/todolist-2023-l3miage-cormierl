@@ -1,8 +1,8 @@
-<section class="todoapp" *ngIf="todoListObs | async as tdl"> <!-- nécessaire pour obtenir le label : abonnement à l'observable -->
+<section class="todoapp" *ngIf="todoListObs | async as tdl"> <!-- nécessaire pour obtenir le label : abonnement à l'observable s'il existe -->
   
   <header class="header">
     <h1>{{tdl.label}}</h1>
-    <form (submit)="create(lab.value); lab.value= ''">
+    <form (submit)="create(lab.value); lab.value= ''"> <!-- Permettez à l'utilisateur de -->
       <input name="newTodoInput" class="new-todo" placeholder="Que faire?" autofocus #lab />
     </form>
   </header>
@@ -11,8 +11,8 @@
     <input class="toggle-all" type="checkbox" name="toggleAll"/>
     <label for="toggleAll">Mark all as complete</label>
     <ul class="todo-list">
-      <li *ngFor="let task of tdl.items; index as i; trackBy: trackById" [class.completed]="task.isDone" [class.editing]="todo.editing" >
-        <!-- envoyer les infos nécessaires a todo-item -->
+      <li *ngFor="let task of tdl.items; index as i; trackBy: trackById" [class.completed]="task.isDone" [class.editing]="todo.isEditing" >
+        <!-- envoyer les infos nécessaires a todo-item abonnement aux events update et delete -->
         <app-todo-item #todo [todoItem]="task" (updateEvt)="update($event, task)" (removeEvt)="delete($event)"></app-todo-item>
       </li>
     </ul>

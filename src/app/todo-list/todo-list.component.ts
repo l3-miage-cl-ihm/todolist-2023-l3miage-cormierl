@@ -34,7 +34,7 @@ export class TodoListComponent {
     this.tds.update(data, ...items);
   }
 
-  trackById(i : number){
-    return i;
+  trackById(i : number, e : TodoItem){
+    return e.id;
   }
 }

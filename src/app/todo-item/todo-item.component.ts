@@ -12,7 +12,20 @@ export class TodoItemComponent {
   @Output() updateEvt = new EventEmitter<Partial<TodoItem>>()
   @Output() removeEvt = new EventEmitter<TodoItem>()
 
-  public editing = false
+  private _isEditing = false
+
+  get isEditing() : boolean {
+    return this._isEditing
+  }
+
+  set isEditing(state : boolean) {
+    this._isEditing = state
+  }
+
+  changeLabel(label: string): void {
+    this.updateEvt.emit({label}); // équivaut à label : label
+    this._isEditing = false
+  }
 
   update(todo: Partial<TodoItem>): void {
     this.updateEvt.emit(todo)
@@ -22,5 +35,4 @@ export class TodoItemComponent {
     this.removeEvt.emit(this.todoItem)
   }
 
-  
 }

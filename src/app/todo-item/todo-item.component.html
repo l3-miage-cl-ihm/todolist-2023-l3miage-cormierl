@@ -1,9 +1,9 @@
 <div class="view">
     <input class="toggle" type="checkbox" name="done" [ngModel]="todoItem.isDone" (ngModelChange)="update({isDone : $event})" />
-    <label class="texte" (dblclick)="editing = true "> {{todoItem.label}}
+    <label class="texte" (dblclick)="isEditing = true"> {{todoItem.label}}
     </label>
     <button class="destroy" (click)="remove()"></button>
 </div>
-<form (submit)="updateEvt.emit({label: newTextInput.value}); editing = false">
-    <input #newTextInput name="newTextInput" class="edit" [ngModel]="todoItem.label" />
+<form (submit)="changeLabel(newTextInput.value)">
+    <input #newTextInput name="newTextInput" class="edit" [ngModel]="todoItem.label" (blur)="changeLabel(newTextInput.value)" /> <!-- récupération de la valeur avec le ngModel -->
 </form>
